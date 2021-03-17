@@ -1,1 +1,2 @@
 - [ ] Increase the number of people that can get connected at a single time.
+- [ ] messages are being sent twice.(2:49:16)

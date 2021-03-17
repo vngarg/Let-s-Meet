@@ -1,58 +1,82 @@
-const socket = io('/');
-const videoGrid = document.getElementById('video-grid')
-const myVideo = document.createElement('video');
+const socket = io("/");
+const videoGrid = document.getElementById("video-grid");
+const myVideo = document.createElement("video");
 myVideo.muted = true;
 
 // connecting to the peer server.
 var peer = new Peer(undefined, {
-    path: '/peerjs',
-    host: '/', // host URL, in case of deployment add the heroku URL here.
-    port: '8080', // port on which the server is running
+  path: "/peerjs",
+  host: "/", // host URL, in case of deployment add the heroku URL here.
+  port: "8080", // port on which the server is running
 });
 
 let myVideoStream;
 
-navigator.mediaDevices.getUserMedia({
-    audio: false, 
-    video: true
-}).then(stream => {
+navigator.mediaDevices
+  .getUserMedia({
+    audio: false,
+    video: true,
+  })
+  .then((stream) => {
     myVideoStream = stream;
     addVideoStream(myVideo, stream);
 
     // adding user to our stream
-    peer.on('call', call => {
-        call.answer(stream);
-        const video = document.createElement('video');
-        call.on('stream', userVideoStream => {
-            addVideoStream(video, userVideoStream);
-        })
-    })
+    peer.on("call", (call) => {
+      call.answer(stream);
+      const video = document.createElement("video");
+      call.on("stream", (userVideoStream) => {
+        addVideoStream(video, userVideoStream);
+      });
+    });
 
-    socket.on('user-connected', (userId) => {
-    connectToNewUser(userId, stream);
-    })
-})
+    socket.on("user-connected", (userId) => {
+      connectToNewUser(userId, stream);
+    });
 
-peer.on('open', id => {
-    socket.emit('join-room', ROOM_ID, id);
-})
+    // sending messages
+    let text = document.querySelector("input");
 
-socket.emit('join-room', ROOM_ID);
+    document.querySelector("html").onkeydown = function (e) {
+      if (e.which == 13 && text.value.length != 0) {
+        socket.emit("message", text.value);
+        text.value = "";
+      }
+    };
+
+    socket.on("createMessage", (message) => {
+      const element = document.createElement("li");
+      element.innerHTML = `<b>user</b><br />${message}`;
+      element.classList.add("message");
+
+      document.querySelector(".messages").append(element);
+      
+      // auto scroll to the bottom whenever a new message is sent.
+      let x = document.querySelector('.main_chat_window');
+      x.scrollTop = x.scrollHeight;
+    });
+  });
+
+peer.on("open", (id) => {
+  socket.emit("join-room", ROOM_ID, id);
+});
+
+socket.emit("join-room", ROOM_ID);
 
 // add our stream to the new user.
 const connectToNewUser = (userId, stream) => {
-    const call = peer.call(userId, stream);
-    const video = document.createElement('video');
-    call.on('stream', userVideoStream => {
-        addVideoStream(video, userVideoStream);
-    })
-}
+  const call = peer.call(userId, stream);
+  const video = document.createElement("video");
+  call.on("stream", (userVideoStream) => {
+    addVideoStream(video, userVideoStream);
+  });
+};
 
 // Add video to the stream
 const addVideoStream = (video, stream) => {
-    video.srcObject = stream;
-    video.addEventListener('loadedmetadata', () => {
-        video.play();
-    })
-    videoGrid.append(video);
-}
+  video.srcObject = stream;
+  video.addEventListener("loadedmetadata", () => {
+    video.play();
+  });
+  videoGrid.append(video);
+};
