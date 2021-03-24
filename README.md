@@ -5,3 +5,4 @@
 - [ ] Video background m bhi chalti rahe, if app is cloed video should not pause.
 - [ ] When we exit, my video must also be deleted.
 - [ ] add action button in both Register and Login pages.
+- [ ] add checks in the backend files, like user is registered, user is not regestered etc.

@@ -1,8 +1,11 @@
+// import { RegisterUser } from '../../controller/authentication';
+
 const login = () => {
-    const email = document.querySelector(".email").value;
-    const password = document.querySelector(".password").value;
-    if(email == 'shlok@gordian.in' && password == '123456')
-        return true;
+    console.log("login")
+    return false;
+}
+
+const register = () => {
     
     return false;
 }

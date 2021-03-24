@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const morgan = require('morgan');
+app.use(morgan("tiny"));
 const { ExpressPeerServer } = require("peer");
 const server = require("http").Server(app);
 const peerServer = ExpressPeerServer(server, {
@@ -7,9 +9,9 @@ const peerServer = ExpressPeerServer(server, {
 });
 const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
+const routes = require('./routes/routes');
 
 app.use("/peerjs", peerServer);
-
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
@@ -17,22 +19,7 @@ const io = require("socket.io")(server, {
   transports: ['polling'],
 });
 
-app.get("/", (req, res) => {
-  res.redirect('/register');
-  // res.redirect(`/${uuidv4()}`);
-});
-
-app.get("/register", (req, res) => {
-  res.render("Register");
-})
-
-app.get("/login", (req, res) => {
-  res.render("login")
-})
-
-app.get("/:room", (req, res) => {
-  res.render("room", { roomId: req.params.room });
-});
+app.use('/', routes)
 
 io.on("connection", (socket) => {
   socket.on("joinRoom", (roomId, userId) => {
