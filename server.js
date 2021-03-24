@@ -13,7 +13,9 @@ app.use("/peerjs", peerServer);
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+  transports: ['polling'],
+});
 
 app.get("/", (req, res) => {
   res.redirect(`/${uuidv4()}`);
