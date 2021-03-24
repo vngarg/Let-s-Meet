@@ -18,8 +18,17 @@ const io = require("socket.io")(server, {
 });
 
 app.get("/", (req, res) => {
-  res.redirect(`/${uuidv4()}`);
+  res.redirect('/register');
+  // res.redirect(`/${uuidv4()}`);
 });
+
+app.get("/register", (req, res) => {
+  res.render("Register");
+})
+
+app.get("/login", (req, res) => {
+  res.render("login")
+})
 
 app.get("/:room", (req, res) => {
   res.render("room", { roomId: req.params.room });

@@ -4,3 +4,4 @@
 - [ ] Timestamp with message
 - [ ] Video background m bhi chalti rahe, if app is cloed video should not pause.
 - [ ] When we exit, my video must also be deleted.
+- [ ] add action button in both Register and Login pages.
