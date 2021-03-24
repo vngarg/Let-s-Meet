@@ -1,3 +1,3 @@
 - [ ] Increase the number of people that can get connected at a single time.
-- [ ] messages are being sent twice.(2:49:16)
-- [ ] Stop video & audio not working
+- [ ] Add leave Meeting feature
+- [ ] Add logo of S.G. Codes to the title bar 

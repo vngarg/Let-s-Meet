@@ -13,55 +13,37 @@
 
 <body>
     <div class="main">
-        <div class="main_left">
-            <div class="main_videos">
-                <div id='video-grid'>
-
-                </div>
+        <div class="LeftSection">
+            <div class="VideoSection">
+                <div id='VideoGrid'></div>
             </div>
-            <div class="main_controls">
-                <div class="main_controls_block">
-                    <div onclick="toggleMute()" class="main_controls_button main_mute_button">
+            <div class="buttons">
+                <div class="buttonGroup">
+                    <div onclick="toggleMute()" class="button muteButton">
                         <i class="fa fa-microphone"></i>
                         <span>Mute</span>
                     </div>
-                    <div onclick="toggleVideo()" class="main_controls_button main_video_button">
+                    <div onclick="toggleVideo()" class="button videoButton">
                         <i class="fa fa-video"></i>
                         <span>Stop Video</span>
                     </div>
                 </div>
-                <div class="main_controls_block">
-                    <div class="main_controls_button">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Security</span>
-                    </div>
-                    <div class="main_controls_button">
-                        <i class="fas fa-user-friends"></i>
-                        <span>Participants</span>
-                    </div>
-                    <div class="main_controls_button">
-                        <i class="fas fa-comment-alt"></i>
-                        <span>Chat</span>
-                    </div>
-                </div>
-                <div class="main_controls_block">
-                    <div class="main_controls_button">
-                        <span class="leave_meeting">Leave Meeting</span>
+                <div class="buttonGroup">
+                    <div class="button">
+                        <span class="leaveMeeting">Leave Meeting</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="main_right">
-            <div class="main_header">
+        <div class="RightSection">
+            <div class="chatHeading">
                 <h6>Chat</h6>
             </div>
-            <div class="main_chat_window">
-                <ul class="messages">
-
-                </ul>
+            <div class="chatArea">
+                <ul class="messages"></ul>
             </div>
-            <div class="main_message_container">
-                <input id='chat_message' type="text" placeholder="Type the message...." />
+            <div class="chatInputField">
+                <input id='chatMessage' type="text" placeholder="Type the message...." />
             </div>
         </div>
     </div>

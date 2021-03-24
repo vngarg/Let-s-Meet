@@ -1,28 +1,28 @@
 const socket = io("/");
-const videoGrid = document.getElementById("video-grid");
+const videoGrid = document.getElementById("VideoGrid");
+
+const myPeer = new Peer(undefined, {
+  path: "/peerjs",
+  host: "/",
+  port: "443",
+});
+
+let videoStream;
 const myVideo = document.createElement("video");
 myVideo.muted = true;
 
-// connecting to the peer server.
-var peer = new Peer(undefined, {
-  path: "/peerjs",
-  host: "/", // host URL, in case of deployment add the heroku URL here.
-  port: "8080", // port on which the server is running
-});
-
-let myVideoStream;
+const peers = {};
 
 navigator.mediaDevices
   .getUserMedia({
-    audio: true,
     video: true,
+    audio: true,
   })
   .then((stream) => {
-    myVideoStream = stream;
+    videoStream = stream;
     addVideoStream(myVideo, stream);
-
-    // adding user to our stream
-    peer.on("call", (call) => {
+    
+    myPeer.on("call", (call) => {
       call.answer(stream);
       const video = document.createElement("video");
       call.on("stream", (userVideoStream) => {
@@ -30,11 +30,10 @@ navigator.mediaDevices
       });
     });
 
-    socket.on("user-connected", (userId) => {
-      connectToNewUser(userId, stream);
+    socket.on("userConnected", (userId) => {
+      connectNewUser(userId, stream);
     });
 
-    // sending messages
     let text = document.querySelector("input");
 
     document.querySelector("html").onkeydown = function (e) {
@@ -50,87 +49,94 @@ navigator.mediaDevices
       element.classList.add("message");
 
       document.querySelector(".messages").append(element);
-      
+
       // auto scroll to the bottom whenever a new message is sent.
-      let x = document.querySelector('.main_chat_window');
+      let x = document.querySelector(".chatArea");
       x.scrollTop = x.scrollHeight;
     });
   });
 
-peer.on("open", (id) => {
-  socket.emit("join-room", ROOM_ID, id);
+myPeer.on("open", (id) => {
+  socket.emit("joinRoom", ROOM_ID, id);
 });
 
-socket.emit("join-room", ROOM_ID);
-
-// add our stream to the new user.
-const connectToNewUser = (userId, stream) => {
-  const call = peer.call(userId, stream);
+function connectNewUser(userId, stream) {
+  const call = myPeer.call(userId, stream);
   const video = document.createElement("video");
+
   call.on("stream", (userVideoStream) => {
     addVideoStream(video, userVideoStream);
   });
-};
+  call.on("close", () => {
+    video.remove();
+  });
 
-// Add video to the stream
-const addVideoStream = (video, stream) => {
+  peers[userId] = call;
+}
+
+function addVideoStream(video, stream) {
   video.srcObject = stream;
   video.addEventListener("loadedmetadata", () => {
     video.play();
   });
   videoGrid.append(video);
+}
+
+const toggleMute = () => {
+  const enabled = videoStream.getAudioTracks()[0].enabled;
+  if (enabled) {
+    videoStream.getAudioTracks()[0].enabled = false;
+    setUnmuteButton();
+  } else {
+    setMuteButton();
+    videoStream.getAudioTracks()[0].enabled = true;
+  }
 };
 
-// Toggle Mute
-const toggleMute = () => {
-    const enabled = myVideoStream.getAudioTracks()[0].enabled;
-    if(enabled) {
-        myVideoStream.getAudioTracks()[0].enabled = false;
-        setUnmuteButton();
-    } else {
-        myVideoStream.getAudioTracks()[0].enabled = true;
-        setMuteButton();
-    }
-}
+const toggleVideo = () => {
+  let enabled = videoStream.getVideoTracks()[0].enabled;
+  
+  if (enabled) {
+    videoStream.getVideoTracks()[0].enabled = false;
+    setPlayVideo();
+  } else {
+    setStopVideo();
+    videoStream.getVideoTracks()[0].enabled = true;
+  }
+};
 
 const setMuteButton = () => {
-    const element = `<i class='fas fa-microphone'></i>
-    <span>Mute</span>`
+  const html = `
+    <i class="fas fa-microphone"></i>
+    <span>Mute</span>
+  `;
 
-    document.querySelector('.main_mute_button').innerHTML = element;
-}
+  document.querySelector(".muteButton").innerHTML = html;
+};
 
 const setUnmuteButton = () => {
-    const element = `<i class='unmute fas fa-microphone-slash'></i>
-    <span>Mute</span>`
+  const html = `
+    <i class="unmute fas fa-microphone-slash"></i>
+    <span>Unmute</span>
+  `;
 
-    document.querySelector('.main_mute_button').innerHTML = element;
-}
+  document.querySelector(".muteButton").innerHTML = html;
+};
 
-// Toggle Video
-const toggleVideo = () => {
-    const enabled = myVideoStream.getAudioTracks()[0].enabled;
-    if(enabled) {
-        myVideoStream.getAudioTracks()[0].enabled = false;
-        setPlayVideoButton();
-    } else {
-        myVideoStream.getAudioTracks()[0].enabled = true;
-        setStopVideoButton();
-    }
-}
+const setStopVideo = () => {
+  const html = `
+    <i class="fas fa-video"></i>
+    <span>Stop Video</span>
+  `;
 
-const setStopVideoButton = () => {
-    const element = `
-    <i class='fas fa-video'></i>
-    <span>Stop Video</span>`
+  document.querySelector(".videoButton").innerHTML = html;
+};
 
-    document.querySelector('.main_video_button').innerHTML = element;
-}
-
-const setPlayVideoButton = () => {
-    const element = `
-    <i class='stop fas fa-video-slash'></i>
-    <span>Play Video</span>`
-
-    document.querySelector('.main_video_button').innerHTML = element;
-}
+const setPlayVideo = () => {
+  const html = `
+  <i class="stop fas fa-video-slash"></i>
+    <span>Play Video</span>
+  `;
+  
+  document.querySelector(".videoButton").innerHTML = html;
+};
