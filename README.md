@@ -1,3 +1,6 @@
 - [ ] Increase the number of people that can get connected at a single time.
 - [ ] Add leave Meeting feature
 - [ ] Add logo of S.G. Codes to the title bar 
+- [ ] Timestamp with message
+- [ ] Video background m bhi chalti rahe, if app is cloed video should not pause.
+- [ ] When we exit, my video must also be deleted.
