@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const morgan = require('morgan');
 app.use(morgan("tiny"));
+var bodyParser = require('body-parser');
 const { ExpressPeerServer } = require("peer");
 const server = require("http").Server(app);
 const peerServer = ExpressPeerServer(server, {
@@ -11,6 +12,7 @@ const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 const routes = require('./routes/routes');
 
+app.use(bodyParser.json());
 app.use("/peerjs", peerServer);
 app.set("view engine", "ejs");
 app.use(express.static("public"));

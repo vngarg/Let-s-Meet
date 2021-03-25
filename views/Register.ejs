@@ -40,26 +40,26 @@
         <div class="container mt-5 text-center">
             <div class="row d-flex justify-content-center">
                 <div class="col-12 col-sm-6">
-                    <form onsubmit="return register()" action="">
+                    <form onsubmit="return register()" action="/room">
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Full Name</span>
                             <input type="text" class="form-control fullName" placeholder="Full Name"
-                                aria-label="fullName" aria-describedby="basic-addon1">
+                                aria-label="fullName" aria-describedby="basic-addon1" required>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Contact Number</span>
                             <input type="number" class="form-control number" placeholder="Contact Number"
-                                aria-label="number" aria-describedby="basic-addon1">
+                                aria-label="number" aria-describedby="basic-addon1" required>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Email</span>
                             <input type="email" class="form-control email" placeholder="Email" aria-label="email"
-                                aria-describedby="basic-addon1">
+                                aria-describedby="basic-addon1" required>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Password</span>
                             <input type="password" class="form-control password" placeholder="Password"
-                                aria-label="password" aria-describedby="basic-addon1">
+                                aria-label="password" aria-describedby="basic-addon1" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Register</button>
                     </form>

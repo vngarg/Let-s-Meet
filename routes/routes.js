@@ -1,4 +1,5 @@
 const express = require("express");
+const { RegisterUser } = require("../controller/authentication");
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -13,6 +14,8 @@ router.get("/register", (req, res) => {
 router.get("/login", (req, res) => {
   res.render("login");
 });
+
+router.post("/Register", RegisterUser);
 
 router.get("/:room", (req, res) => {
   res.render("room", { roomId: req.params.room });
