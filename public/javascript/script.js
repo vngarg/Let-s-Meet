@@ -4,7 +4,7 @@ const videoGrid = document.getElementById("VideoGrid");
 const myPeer = new Peer(undefined, {
   path: "/peerjs",
   host: "/",
-  port: "3000",
+  port: "5000",
 });
 
 let videoStream;
@@ -45,7 +45,7 @@ navigator.mediaDevices
 
     socket.on("createMessage", (message) => {
       const element = document.createElement("li");
-      element.innerHTML = `<b>user</b><br />${message}`;
+      element.innerHTML = `<b>${localStorage.getItem('name')}</b><br />${message}`;
       element.classList.add("message");
 
       document.querySelector(".messages").append(element);

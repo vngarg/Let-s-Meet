@@ -3,7 +3,7 @@ const { RegisterUser, Login } = require("../controller/authentication");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.redirect("/register");
+  res.redirect("/login");
   // res.redirect(`/${uuidv4()}`);
 });
 

@@ -40,7 +40,7 @@
         <div class="container mt-5 text-center">
             <div class="row d-flex justify-content-center">
                 <div class="col-12 col-sm-6">
-                    <form onsubmit="return login()" action="/room">
+                    <form id='loginForm'>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">Email</span>
                             <input type="email" class="form-control email" placeholder="Email" aria-label="email"
@@ -51,8 +51,9 @@
                             <input type="password" class="form-control password" placeholder="Password" aria-label="password"
                                 aria-describedby="basic-addon1">
                         </div>
+                        <div class="error"></div>
                         <button type="submit" class="btn btn-primary">Login</button>
-                    </form>
+                    </formon=>
                 </div>
             </div>
         </div>

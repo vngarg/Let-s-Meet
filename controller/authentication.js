@@ -30,6 +30,14 @@ const userModel = mongoose.model("User", users);
 exports.RegisterUser = async (req, res) => {
   const { name, contact, email, password } = req.body;
 
+  const userExistwithEmail = await userModel.findOne({ email });
+  const userExistwithContact = await userModel.findOne({ contact });
+  
+  if(userExistwithContact || userExistwithEmail)
+    return res.status(400).json({
+      message: 'User already exists'
+    })
+
   if (!name || !contact || !email || !password)
     return res.status(400).json({
       message: "Invalid data.",

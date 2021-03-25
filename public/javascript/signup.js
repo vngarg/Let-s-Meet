@@ -1,24 +1,29 @@
 localStorage.clear();
-const loginForm = document.querySelector('#loginForm')
+const registerForm = document.querySelector("#registerForm");
 
 function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    var r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }
 
-const login = async (e) => {
+const register = async (e) => {
   e.preventDefault();
+  const name = document.querySelector(".fullName").value;
+  const contact = document.querySelector(".number").value;
   const email = document.querySelector(".email").value;
   const password = document.querySelector(".password").value;
 
   const data = {
+    name,
+    contact,
     email,
     password,
   };
 
-  fetch("http://localhost:5000/LoginUser", {
+  fetch("http://localhost:5000/Register", {
     method: "POST",
     body: JSON.stringify(data),
     cache: 'no-cache',
@@ -29,19 +34,23 @@ const login = async (e) => {
   })
     .then((response) => response.json())
     .then(async (data) => {
-      await localStorage.setItem("name", data.data.name);
-      window.location.replace(`http://localhost:5000/${uuidv4()}`)
+        try {
+            await localStorage.setItem("name", data.data.name);
+            window.location.replace(`http://localhost:5000/${uuidv4()}`);
+        } catch(error) {
+            throw error;
+        }
     })
     .catch((error) => {
       const showError = document.querySelector(".error");
       const div = document.createElement("div");
       div.classList.add("alert");
       div.classList.add("alert-danger");
-      div.innerText = "Invalid credentials.";
+      div.innerText = "User already exist";
       showError.appendChild(div);
 
       console.log("Error", error);
     });
 };
 
-loginForm.addEventListener("submit", login);
+registerForm.addEventListener("submit", register);
