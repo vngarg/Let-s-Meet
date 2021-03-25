@@ -1,5 +1,5 @@
 const express = require("express");
-const { RegisterUser } = require("../controller/authentication");
+const { RegisterUser, Login } = require("../controller/authentication");
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -16,6 +16,7 @@ router.get("/login", (req, res) => {
 });
 
 router.post("/Register", RegisterUser);
+router.post("/LoginUser", Login);
 
 router.get("/:room", (req, res) => {
   res.render("room", { roomId: req.params.room });

@@ -51,3 +51,22 @@ exports.RegisterUser = async (req, res) => {
     },
   });
 };
+
+exports.Login = async (req, res) => {
+  const { email, password } = req.body;
+  const result = await userModel.find({ email });
+
+  if (result.length > 0) {
+    if (result[0].password == password)
+      return res.status(200).json({
+        message: "User found",
+        data: {
+          name: result[0].name,
+        },
+      });
+  }
+  
+  return res.status(400).json({
+    message: "User not found",
+  });
+};

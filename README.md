@@ -9,3 +9,4 @@
 - [ ] Duplicacy check in Login & Register.
 - [ ] password encryption
 - [ ] change base url while deploying
+- [ ] Login & Signup pages m ek uuid pass kar d so that you can use that during redirection to the zoom page. Pass this uuid from any of the JS file like routes.js
