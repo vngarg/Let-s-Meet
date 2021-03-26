@@ -18,7 +18,7 @@ const login = async (e) => {
     password,
   };
 
-  fetch("http://localhost:5000/LoginUser", {
+  fetch("https://lets-meet-sg.herokuapp.com/LoginUser", {
     method: "POST",
     body: JSON.stringify(data),
     cache: 'no-cache',
@@ -30,7 +30,7 @@ const login = async (e) => {
     .then((response) => response.json())
     .then(async (data) => {
       await localStorage.setItem("name", data.data.name);
-      window.location.replace(`http://localhost:5000/${uuidv4()}`)
+      window.location.replace(`https://lets-meet-sg.herokuapp.com/${uuidv4()}`)
     })
     .catch((error) => {
       const showError = document.querySelector(".error");

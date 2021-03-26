@@ -23,7 +23,7 @@ const register = async (e) => {
     password,
   };
 
-  fetch("http://localhost:5000/Register", {
+  fetch("https://lets-meet-sg.herokuapp.com/Register", {
     method: "POST",
     body: JSON.stringify(data),
     cache: 'no-cache',
@@ -36,7 +36,7 @@ const register = async (e) => {
     .then(async (data) => {
         try {
             await localStorage.setItem("name", data.data.name);
-            window.location.replace(`http://localhost:5000/${uuidv4()}`);
+            window.location.replace(`https://lets-meet-sg.herokuapp.com/${uuidv4()}`);
         } catch(error) {
             throw error;
         }
