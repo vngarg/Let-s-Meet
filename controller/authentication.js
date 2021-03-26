@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 mongoose.connect(process.env.MONGO_URL, {
@@ -11,6 +12,8 @@ mongoose.connect(process.env.MONGO_URL, {
 mongoose.connection.on("connected", () => {
   console.log("Connected to database.");
 });
+
+const salt = 10;
 
 const Schema = mongoose.Schema;
 const users = new Schema({
@@ -28,36 +31,45 @@ const users = new Schema({
 const userModel = mongoose.model("User", users);
 
 exports.RegisterUser = async (req, res) => {
-  const { name, contact, email, password } = req.body;
+  var { name, contact, email, password } = req.body;
 
   const userExistwithEmail = await userModel.findOne({ email });
   const userExistwithContact = await userModel.findOne({ contact });
-  
-  if(userExistwithContact || userExistwithEmail)
+
+  if (userExistwithContact || userExistwithEmail)
     return res.status(400).json({
-      message: 'User already exists'
-    })
+      message: "User already exists",
+    });
 
   if (!name || !contact || !email || !password)
     return res.status(400).json({
       message: "Invalid data.",
     });
 
-  const data = {
-    name,
-    contact,
-    email,
-    password,
-  };
+  bcrypt
+    .hash(password, salt)
+    .then(async function (hash) {
+      const data = {
+        name,
+        contact,
+        email,
+        password: hash,
+      };
 
-  const user = userModel(data);
-  await user.save();
-  return res.status(200).json({
-    message: "Data saved successfully",
-    data: {
-      name,
-    },
-  });
+      const user = userModel(data);
+      await user.save();
+      return res.status(200).json({
+        message: "Data saved successfully",
+        data: {
+          name,
+        },
+      });
+    })
+    .catch((error) => {
+      return res.status(400).json({
+        message: "Cannot save the data.",
+      });
+    });
 };
 
 exports.Login = async (req, res) => {
@@ -65,7 +77,8 @@ exports.Login = async (req, res) => {
   const result = await userModel.find({ email });
 
   if (result.length > 0) {
-    if (result[0].password == password)
+    const match = await bcrypt.compare(password, result[0].password);
+    if (match)
       return res.status(200).json({
         message: "User found",
         data: {
@@ -73,7 +86,7 @@ exports.Login = async (req, res) => {
         },
       });
   }
-  
+
   return res.status(400).json({
     message: "User not found",
   });

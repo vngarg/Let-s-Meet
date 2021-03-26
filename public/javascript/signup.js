@@ -23,7 +23,7 @@ const register = async (e) => {
     password,
   };
 
-  fetch("http://localhost:5000/Register", {
+  fetch("https://lets-meet-sg.herokuapp.com/Register", {
     method: "POST",
     body: JSON.stringify(data),
     cache: 'no-cache',
@@ -36,13 +36,16 @@ const register = async (e) => {
     .then(async (data) => {
         try {
             await localStorage.setItem("name", data.data.name);
-            window.location.replace(`http://localhost:5000/${uuidv4()}`);
+            window.location.replace(`https://lets-meet-sg.herokuapp.com/${uuidv4()}`);
         } catch(error) {
             throw error;
         }
     })
     .catch((error) => {
       const showError = document.querySelector(".error");
+      // clear the div for any error(if present)
+      while (showError.firstChild) showError.firstChild.remove();
+      
       const div = document.createElement("div");
       div.classList.add("alert");
       div.classList.add("alert-danger");
