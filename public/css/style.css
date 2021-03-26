@@ -113,6 +113,16 @@ video {
     color: white;
 }
 
+.message {
+    margin: 16px 0;
+}
+
 .unmute, .stop {
     color: #CC3B33
+}
+
+.messageTime {
+    font-size: 10px;
+    color: gray;
+    margin-left: 10px;
 }

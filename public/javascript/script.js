@@ -21,7 +21,7 @@ navigator.mediaDevices
   .then((stream) => {
     videoStream = stream;
     addVideoStream(myVideo, stream);
-    
+
     myPeer.on("call", (call) => {
       call.answer(stream);
       const video = document.createElement("video");
@@ -43,9 +43,38 @@ navigator.mediaDevices
       }
     };
 
+    // Calculate the current time
+    const getTime = () => {
+      var date = new Date();
+      var hr = date.getHours();
+      var min = date.getMinutes();
+      var session = "AM";
+
+      if (hr >= 12) {
+        session = "PM";
+      }
+      if (hr == 0) {
+        hr = "12";
+      }
+      if (hr > 12) {
+        hr = hr - 12;
+      }
+      if (hr < 10) {
+        hr = "0" + hr;
+      }
+      if (min < 10) {
+        min = "0" + min;
+      }
+
+      const time = hr + ":" + min + " " + session;
+      return time;
+    };
+
     socket.on("createMessage", (message) => {
       const element = document.createElement("li");
-      element.innerHTML = `<b>${localStorage.getItem('name')}</b><br />${message}`;
+      element.innerHTML = `<b>${localStorage.getItem(
+        "name"
+      )}</b><span class='messageTime'>${getTime()}</span><br />${message}`;
       element.classList.add("message");
 
       document.querySelector(".messages").append(element);
@@ -95,7 +124,7 @@ const toggleMute = () => {
 
 const toggleVideo = () => {
   let enabled = videoStream.getVideoTracks()[0].enabled;
-  
+
   if (enabled) {
     videoStream.getVideoTracks()[0].enabled = false;
     setPlayVideo();
@@ -137,6 +166,6 @@ const setPlayVideo = () => {
   <i class="stop fas fa-video-slash"></i>
     <span>Play Video</span>
   `;
-  
+
   document.querySelector(".videoButton").innerHTML = html;
 };
