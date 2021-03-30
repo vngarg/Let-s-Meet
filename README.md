@@ -14,4 +14,3 @@ https://lets-meet-sg.herokuapp.com/
 - [ ] Add leave Meeting feature.
 - [ ] Add user name with the messages. 
 - [ ] Screen share.
-- [ ] Screen share using (https://stackoverflow.com/questions/63013158/node-js-webrtc-screen-shareing)
