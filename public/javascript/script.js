@@ -34,6 +34,12 @@ navigator.mediaDevices
       connectNewUser(userId, stream);
     });
 
+    // Leave Meeting
+    // socket.on("user-disconnected", (userId) => {
+    //   disconnectUser(userId, stream);
+      // if (peers[userId]) peers[userId].close();
+    // });
+
     let text = document.querySelector("input");
 
     document.querySelector("html").onkeydown = function (e) {
@@ -72,9 +78,7 @@ navigator.mediaDevices
 
     socket.on("createMessage", (message) => {
       const element = document.createElement("li");
-      element.innerHTML = `<b>${localStorage.getItem(
-        "name"
-      )}</b><span class='messageTime'>${getTime()}</span><br />${message}`;
+      element.innerHTML = `<b>User</b><span class='messageTime'>${getTime()}</span><br />${message}`;
       element.classList.add("message");
 
       document.querySelector(".messages").append(element);
@@ -110,6 +114,18 @@ function addVideoStream(video, stream) {
   });
   videoGrid.append(video);
 }
+
+// function disconnectUser(userId, userStream) {
+//   const call = myPeer.call(userId, stream);
+  // var audioTrack = userStream.getAudioTracks();
+  // var videoTrack = userStream.getVideoTracks();
+  
+  // userStream.removeTrack(videoTrack[0]);
+  // userStream.removeTrack(audioTrack[0]);
+
+  // var video = document.querySelector('video');
+  // video.style.display = 'none';
+// }
 
 const toggleMute = () => {
   const enabled = videoStream.getAudioTracks()[0].enabled;

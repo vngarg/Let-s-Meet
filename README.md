@@ -1,12 +1,17 @@
-- [ ] Increase the number of people that can get connected at a single time.
-- [ ] Add leave Meeting feature
-- [ ] Add logo of S.G. Codes to the title bar 
-- [x] Timestamp with message
-- [ ] Video background m bhi chalti rahe, if app is cloed video should not pause.
-- [ ] When we exit, my video must also be deleted.
-- [x] password encryption
-- [ ] change base url while deploying
-- [ ] Add new meeting & start meeting option after login.
-- [ ] No one can join a URL without login.
-- [x] clear the error wala div once the file loads bcz the errors overlap & ek saath 2-3 error bhi display ho rahi h
-- [ ] Messages m name always mera hi display ho raha h. Try sending the name as well with the message only.
+![NodeJs](https://img.shields.io/badge/NodeJs-NodeJs-green)
+![star](https://img.shields.io/github/stars/vngarg/Let-s-Meet) 
+![fork](https://img.shields.io/github/forks/vngarg/Let-s-Meet)
+![dev](https://img.shields.io/badge/Developed%20by%20-Shlok%20Garg-orange)
+
+# Let's Meet
+Let's Meet is a video confrencing App made using NodeJs. It uses socket.io and peerjs for custom rooms and peer to peer networking. User can easily signup and then start a video call with their colleagues. 
+
+![Let's Meet](public/images/DispalyImage.png) 
+
+https://lets-meet-sg.herokuapp.com/
+
+### TODO
+- [ ] Add leave Meeting feature.
+- [ ] Add user name with the messages. 
+- [ ] Screen share.
+- [ ] Screen share using (https://stackoverflow.com/questions/63013158/node-js-webrtc-screen-shareing)
